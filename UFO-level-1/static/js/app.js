@@ -4,18 +4,29 @@ var tableData = data;
 // Get a reference to the table body
   var tbody = d3.select("tbody");
 
-function  loadTable(list){
-// Use d3 to update each cell's text with
-// UFO sighting data values (datetime, city, state, country, shape, durationMinutes, comments)
-  list.forEach((data) => {  
-      // Use d3 to append one table row `tr` for each UFO sighting object
-        var row = tbody.append("tr");
-        Object.entries(data).forEach(([key, value]) => {
-      // Append a cell to the row for each value in the UFO table object
-          var cell = row.append("td");
-          cell.text(value);
-        });
-      });
+  function  loadTable(list){
+    // Use d3 to update each cell's text with
+    // UFO sighting data values (datetime, city, state, country, shape, durationMinutes, comments)
+      list.forEach((data) => {  
+          // Use d3 to append one table row `tr` for each UFO sighting object
+            var row = tbody.append("tr");
+            Object.entries(data).forEach(([key, value]) => {
+          // Append a cell to the row for each value in the UFO table object
+              var cell = row.append("td");
+              if (key==="city" || key==="shape"){
+                  var val=camelCasetxt(value);
+                  cell.text(val);
+              }
+              else if(key==="state" || key==="country"){cell.text(value.toUpperCase());}
+              else {cell.text(value);}
+           
+            });
+          });
+      }
+
+  function camelCasetxt(txt){
+        return txt.charAt(0).toUpperCase() + 
+        txt.substr(1).toLowerCase();
   }
 
 // function call to load data
