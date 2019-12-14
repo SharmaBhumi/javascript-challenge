@@ -33,15 +33,31 @@ var button = d3.select("#filter-btn");
 button.on("click", function() {
 
   // Select the input element and get the raw HTML node
-  var inputElement = d3.select("#datetime");
+  var inputElement1 = d3.select("#datetime");
+  var inputElement2 = d3.select("#city");
+  var inputElement3 = d3.select("#state");
+  var inputElement4 = d3.select("#country");
+  var inputElement5 = d3.select("#shape");
 
   // Get the value property of the input element
-  var inputValue = inputElement.property("value");
-  console.log(inputValue);
-
+  var inputValue1 = inputElement1.property("value");
+  var inputValue2 = inputElement2.property("value");
+  var inputValue3 = inputElement3.property("value");
+  var inputValue4 = inputElement4.property("value");
+  var inputValue5 = inputElement5.property("value");
+  
   // collect the filter value from the input box and store the filtered data in a variable
-  var filteredData = tableData.filter(data => data.datetime === inputValue);
-  console.log(filteredData);
+  // var fData1 = tableData.filter(data => data.datetime.toUpperCase() === inputValue1.toUpperCase());
+  // var fData2 = fData1.filter(data => data.city.toUpperCase() === inputValue2.toUpperCase());
+  // var fData3 = fData2.filter(data => data.state.toUpperCase() === inputValue3.toUpperCase());
+  // var fData4 = fData3.filter(data => data.country.toUpperCase() === inputValue4.toUpperCase());
+  // var filteredData = fData4.filter(data => data.shape.toUpperCase() === inputValue5.toUpperCase());
+  
+  var filteredData = tableData.filter(data => (data.datetime.toUpperCase() === inputValue1.toUpperCase() &&
+                                              data.city.toUpperCase() === inputValue2.toUpperCase() &&
+                                              data.state.toUpperCase() === inputValue3.toUpperCase() &&
+                                              data.country.toUpperCase() === inputValue4.toUpperCase() &&
+                                              data.shape.toUpperCase() === inputValue5.toUpperCase()));
 
   // delete all the rows from the HTML table
   var myTable = document.getElementById("ufo-table");
@@ -63,31 +79,36 @@ button.on("click", function() {
 //   }
   
   function filterTable(event, index) {
-    var filter = event.target.value.toUpperCase();
+    // var filter = event.target.value.toUpperCase();
+    var filter = event.target.value;
+    console.log(filter);
+      
     var rows = document.querySelector("#ufo-table tbody").rows;
     for (var i = 0; i < rows.length; i++) {
-      var firstCol = rows[i].cells[0].textContent.toUpperCase();
-      var secondCol = rows[i].cells[1].textContent.toUpperCase();
-      var thirdCol = rows[i].cells[2].textContent.toUpperCase();
-      var fourthCol = rows[i].cells[3].textContent.toUpperCase();
-      var fifthCol = rows[i].cells[4].textContent.toUpperCase();
+     var firstCol = rows[i].cells[0].textContent;
+      var secondCol = rows[i].cells[1].textContent;
+      var thirdCol = rows[i].cells[2].textContent;
+      var fourthCol = rows[i].cells[3].textContent;
+      var fifthCol = rows[i].cells[4].textContent;
       
-      console.log(firstCol);
-      if ((firstCol.indexOf(filter) > -1 && index == 0) || 
-      (secondCol.indexOf(filter) > -1 && index == 1) || 
-      (thirdCol.indexOf(filter) > -1 && index == 2) ||
-      (fourthCol.indexOf(filter) > -1 && index == 3) ||
-      (fifthCol.indexOf(filter) > -1 && index == 4)) 
-      {
+      if ((firstCol.indexOf(filter) > -1 && index == 0) ||
+          (secondCol.indexOf(filter) > -1 && index == 1) ||
+          (thirdCol.indexOf(filter) > -1 && index == 2) ||
+          (fourthCol.indexOf(filter) > -1 && index == 3) ||
+          (fifthCol.indexOf(filter) > -1 && index == 4)
+      )
+       {
         rows[i].style.display = "";
       } else {
         rows[i].style.display = "none";
-      }      
+      }  
+               
     }
   }
 
   document.querySelectorAll('input.form-control').forEach(function(el,idx){
     el.addEventListener('keyup', function(e){
+      console.log(e,idx)
       filterTable(e, idx);
     }, false);
   });
